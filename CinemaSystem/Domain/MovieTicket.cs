@@ -5,7 +5,7 @@
         private int rowNr;
         private int seatNr;
         private bool isPremium;
-        private MovieScreening movieScreening;
+        public MovieScreening movieScreening;
 
         public MovieTicket(MovieScreening movieScreening, bool isPremiumReservation, int rowNr, int seatNr)
         {

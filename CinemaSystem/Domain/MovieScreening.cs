@@ -5,7 +5,7 @@ namespace CinemaSystem.Domain
 {
     public class MovieScreening
     {
-        private DateTime dateAndTime;
+        public DateTime dateAndTime;
         private double pricePerSeat;
         private Movie movie;
         private ICollection<MovieTicket> movieTickets;

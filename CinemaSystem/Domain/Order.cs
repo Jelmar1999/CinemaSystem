@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
-using Newtonsoft.Json;
-
-// using System.Text.Json;
+﻿using Newtonsoft.Json;
 
 namespace CinemaSystem.Domain
 {
@@ -35,7 +29,65 @@ namespace CinemaSystem.Domain
 
         public double CalculatePrice()
         {
-            return 0;
+            double price = 0;
+            var free = false;
+
+            foreach (var movieTicket in this.tickets)
+            {
+                // Check if ticket is free, if true skip to next ticket
+                if (free) continue;
+                price += movieTicket.GetPrice();
+                if (movieTicket.IsPremiumTicket())
+                {
+                    price += isStudentOrder ? 2 : 3;
+                }
+                // Check if next ticket is free
+                if (IsSecondTicketFree(movieTicket))
+                {
+                    free = true;
+                }
+            }
+
+            price *= (double) (100 - GetSaleAmount()) / 100;
+
+            return price;
+        }
+
+        private int GetSaleAmount()
+        {
+            var sale = 0;
+            if (tickets.Count < 6) return sale;
+            switch (tickets.First().movieScreening.dateAndTime.DayOfWeek)
+            {
+                case DayOfWeek.Saturday:
+                case DayOfWeek.Sunday:
+                    sale += 10;
+                    break;
+            }
+
+            return sale;
+        }
+
+        private bool IsSecondTicketFree(MovieTicket ticket)
+        {
+            if (isStudentOrder)
+            {
+                return true;
+            }
+
+            switch (ticket.movieScreening.dateAndTime.DayOfWeek)
+            {
+                case DayOfWeek.Friday:
+                case DayOfWeek.Saturday:
+                case DayOfWeek.Sunday:
+                default:
+                    return false;
+                case DayOfWeek.Monday:
+                case DayOfWeek.Tuesday:
+                case DayOfWeek.Wednesday:
+                case DayOfWeek.Thursday:
+                    return true;
+            }
         }
 
         public override string ToString()
