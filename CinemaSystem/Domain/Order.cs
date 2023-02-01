@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 
 namespace CinemaSystem.Domain
 {
@@ -6,7 +9,7 @@ namespace CinemaSystem.Domain
     {
         private int orderNr;
         private bool isStudentOrder;
-        private ICollection<MovieTicket> tickets;
+        private ICollection<MovieTicket> tickets = null;
 
         public Order(int orderNr, bool isStudentOrder)
         {
@@ -31,6 +34,17 @@ namespace CinemaSystem.Domain
 
         public void Export(TicketExportFormat exportFormat)
         {
+            if (exportFormat == TicketExportFormat.JSON)
+            {
+                // string json = Newtonsoft.Json.JsonConvert.SerializeObject(this);
+                // Console.WriteLine("JSONIFIED: " + json);
+                string json = JsonSerializer.Serialize<Order>(this);
+                Console.WriteLine("JASOOOOOOON: " + json);
+            }
+            else if (exportFormat == TicketExportFormat.PLAINTEXT)
+            {
+                
+            }
         }
     }
 }
