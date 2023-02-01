@@ -4,12 +4,9 @@ namespace CinemaSystem.Domain
 {
     public class Order
     {
-        [JsonProperty]
-        private int orderNr { get; set; }
-        [JsonProperty]
-        private bool isStudentOrder { get; set; }
-        [JsonProperty]
-        private ICollection<MovieTicket> tickets { get; set; }
+        [JsonProperty] private int orderNr { get; set; }
+        [JsonProperty] private bool isStudentOrder { get; set; }
+        [JsonProperty] private ICollection<MovieTicket> tickets { get; set; }
 
         public Order(int orderNr, bool isStudentOrder)
         {
@@ -29,6 +26,11 @@ namespace CinemaSystem.Domain
 
         public double CalculatePrice()
         {
+            if (tickets == null || tickets.Count == 0)
+            {
+                return 0;
+            }
+
             double price = 0;
             var free = false;
 
@@ -41,6 +43,7 @@ namespace CinemaSystem.Domain
                 {
                     price += isStudentOrder ? 2 : 3;
                 }
+
                 // Check if next ticket is free
                 if (IsSecondTicketFree(movieTicket))
                 {
@@ -48,7 +51,7 @@ namespace CinemaSystem.Domain
                 }
             }
 
-            price *= (double) (100 - GetSaleAmount()) / 100;
+            price *= (double)(100 - GetSaleAmount()) / 100;
 
             return price;
         }
@@ -101,7 +104,6 @@ namespace CinemaSystem.Domain
             {
                 string output = Newtonsoft.Json.JsonConvert.SerializeObject(this, Formatting.Indented);
                 Console.WriteLine(output);
-
             }
             else if (exportFormat == TicketExportFormat.PLAINTEXT)
             {
