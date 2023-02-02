@@ -20,8 +20,9 @@ public class OrderUnitTests
     }
 
     [Test]
-    public void Test1()
+    public void AssertIfCalculatePriceReturns2()
     {
-        Assert.Pass();
+        var result = order.CalculatePrice();
+        Assert.That(result, Is.EqualTo(2));
     }
 }

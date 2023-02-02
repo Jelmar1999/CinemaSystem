@@ -8,4 +8,5 @@ var screening = new MovieScreening(movie, DateTime.Today, 12);
 var ticket = new MovieTicket(screening, true, 12, 23);
 var order = new Order(324, true);
 order.AddSeatReservation(ticket);
+Console.WriteLine("Price = " + order.CalculatePrice());
 order.Export(TicketExportFormat.PLAINTEXT);
