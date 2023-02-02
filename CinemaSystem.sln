@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaSystem", "CinemaSyste
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaSystem.Domain", "CinemaSystem.Domain\CinemaSystem.Domain.csproj", "{99AE772D-CB30-488B-8194-B61BA70A4FBF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaSystem.Test", "CinemaSystem.Test\CinemaSystem.Test.csproj", "{7728FB1B-FC9F-4558-9CD9-F05861999CD5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{99AE772D-CB30-488B-8194-B61BA70A4FBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99AE772D-CB30-488B-8194-B61BA70A4FBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99AE772D-CB30-488B-8194-B61BA70A4FBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7728FB1B-FC9F-4558-9CD9-F05861999CD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7728FB1B-FC9F-4558-9CD9-F05861999CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7728FB1B-FC9F-4558-9CD9-F05861999CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7728FB1B-FC9F-4558-9CD9-F05861999CD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
