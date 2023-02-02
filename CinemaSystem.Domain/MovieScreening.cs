@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace CinemaSystem.Domain
 {
     public class MovieScreening
     {
+        [JsonProperty]
         private DateTime dateAndTime;
+        [JsonProperty]
         private double pricePerSeat;
+        [JsonProperty]
         private Movie movie;
-        private ICollection<MovieTicket> movieTickets;
 
         public MovieScreening(Movie movie, DateTime dateAndTime, double pricePerSeat)
         {
+            this.movie = movie;
             this.dateAndTime = dateAndTime;
             this.pricePerSeat = pricePerSeat;
         }
@@ -40,7 +44,7 @@ namespace CinemaSystem.Domain
 
         public override string ToString()
         {
-            return base.ToString();
+            return $"dateTime = {dateAndTime}, priceperseat = {pricePerSeat}, movie = {movie}";
         }
     }
 }

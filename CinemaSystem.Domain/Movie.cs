@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace CinemaSystem.Domain
 {
     public class Movie
     {
+        [JsonProperty]
         private string title;
         private ICollection<MovieScreening> movieScreenings;
 
@@ -19,7 +21,7 @@ namespace CinemaSystem.Domain
 
         public override string ToString()
         {
-            return base.ToString();
+            return $"title = {title}";
         }
     }
 }

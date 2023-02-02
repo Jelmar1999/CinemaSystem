@@ -6,7 +6,7 @@ namespace CinemaSystem.Domain
     {
         [JsonProperty] private int orderNr { get; set; }
         [JsonProperty] private bool isStudentOrder { get; set; }
-        [JsonProperty] private ICollection<MovieTicket> tickets { get; set; }
+        [JsonProperty] private ICollection<MovieTicket> tickets = new List<MovieTicket>();
 
         public Order(int orderNr, bool isStudentOrder)
         {
@@ -76,7 +76,12 @@ namespace CinemaSystem.Domain
 
         public override string ToString()
         {
-            return $"orderNr = {this.orderNr}, isStudentOrder = {this.isStudentOrder}, movieTickets = {this.tickets}";
+            string ticketString = "\n";
+            foreach (var ticket in tickets)
+            {
+                ticketString += ticket.ToString()+ '\n';
+            }
+            return $"orderNr = {this.orderNr}, isStudentOrder = {this.isStudentOrder}, movieTickets : {ticketString}";
         }
 
         public void Export(TicketExportFormat exportFormat)
