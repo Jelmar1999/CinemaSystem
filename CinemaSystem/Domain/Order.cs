@@ -32,12 +32,12 @@ namespace CinemaSystem.Domain
             }
 
             double price = 0;
-            var free = false;
+            var freeSecondTicket = false;
 
-            foreach (var movieTicket in this.tickets)
+            foreach (var movieTicket in tickets)
             {
                 // Check if ticket is free, if true skip to next ticket
-                if (free) continue;
+                if (freeSecondTicket) continue;
                 price += movieTicket.GetPrice();
                 if (movieTicket.IsPremiumTicket())
                 {
@@ -47,7 +47,7 @@ namespace CinemaSystem.Domain
                 // Check if next ticket is free
                 if (IsSecondTicketFree(movieTicket))
                 {
-                    free = true;
+                    freeSecondTicket = true;
                 }
             }
 
@@ -59,13 +59,10 @@ namespace CinemaSystem.Domain
         private int GetSaleAmount()
         {
             var sale = 0;
-            if (tickets.Count < 6) return sale;
-            switch (tickets.First().movieScreening.dateAndTime.DayOfWeek)
+
+            if (tickets.Count >= 6 && tickets.First().movieScreening.inWeekend())
             {
-                case DayOfWeek.Saturday:
-                case DayOfWeek.Sunday:
-                    sale += 10;
-                    break;
+                sale += 10;
             }
 
             return sale;
@@ -73,24 +70,7 @@ namespace CinemaSystem.Domain
 
         private bool IsSecondTicketFree(MovieTicket ticket)
         {
-            if (isStudentOrder)
-            {
-                return true;
-            }
-
-            switch (ticket.movieScreening.dateAndTime.DayOfWeek)
-            {
-                case DayOfWeek.Friday:
-                case DayOfWeek.Saturday:
-                case DayOfWeek.Sunday:
-                default:
-                    return false;
-                case DayOfWeek.Monday:
-                case DayOfWeek.Tuesday:
-                case DayOfWeek.Wednesday:
-                case DayOfWeek.Thursday:
-                    return true;
-            }
+            return isStudentOrder || ticket.movieScreening.inWeekend();
         }
 
         public override string ToString()
