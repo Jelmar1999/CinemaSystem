@@ -32,7 +32,8 @@ namespace CinemaSystem.Domain
             }
 
             var price = 0d;
-            var isSecondTicketFree = IsSecondTicketFree();
+            var weekendOrder = tickets.First().movieScreening.inWeekend();
+            var isSecondTicketFree = isStudentOrder || weekendOrder;
             var freeSecondTicket = false;
 
             foreach (var movieTicket in tickets)
@@ -51,27 +52,13 @@ namespace CinemaSystem.Domain
                     freeSecondTicket = true;
                 }
             }
-
-            price *= (double)(100 - GetSaleAmount()) / 100;
-
-            return price;
-        }
-
-        private int GetSaleAmount()
-        {
-            var sale = 0;
-
-            if (tickets.Count >= 6 && tickets.First().movieScreening.inWeekend())
+            
+            if (tickets.Count >= 6 && weekendOrder)
             {
-                sale += 10;
+                price *= 0.9;
             }
-
-            return sale;
-        }
-
-        private bool IsSecondTicketFree()
-        {
-            return isStudentOrder || tickets.First().movieScreening.inWeekend();
+            
+            return price;
         }
 
         public override string ToString()
