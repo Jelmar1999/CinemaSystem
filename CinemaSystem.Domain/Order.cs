@@ -6,17 +6,18 @@ namespace CinemaSystem.Domain
     {
         [JsonProperty] private int orderNr { get; set; }
         [JsonProperty] private bool isStudentOrder { get; set; }
-        [JsonProperty] private ICollection<MovieTicket> tickets = new List<MovieTicket>();
+        [JsonProperty] private ICollection<MovieTicket> tickets;
 
         public Order(int orderNr, bool isStudentOrder)
         {
             this.orderNr = orderNr;
             this.isStudentOrder = isStudentOrder;
+            this.tickets = new List<MovieTicket>();
         }
 
         public int GetOrderNr()
         {
-            return 0;
+            return orderNr;
         }
 
         public void AddSeatReservation(MovieTicket ticket)
@@ -28,12 +29,12 @@ namespace CinemaSystem.Domain
         {
             if (tickets == null || tickets.Count == 0)
             {
-                return 0;
+                return -1;
             }
 
             var price = 0d;
             var weekendOrder = tickets.First().movieScreening.inWeekend();
-            var isSecondTicketFree = isStudentOrder || weekendOrder;
+            var isSecondTicketFree = isStudentOrder || !weekendOrder;
             var freeSecondTicket = false;
 
             foreach (var movieTicket in tickets)
@@ -45,7 +46,7 @@ namespace CinemaSystem.Domain
                 {
                     price += isStudentOrder ? 2 : 3;
                 }
-
+                
                 // Check if next ticket is free
                 if (isSecondTicketFree)
                 {
@@ -53,12 +54,12 @@ namespace CinemaSystem.Domain
                 }
             }
             
-            if (tickets.Count >= 6 && weekendOrder)
+            if (tickets.Count >= 6 && weekendOrder && !isStudentOrder)
             {
                 price *= 0.9;
             }
             
-            return price;
+            return Math.Round(price,2);
         }
 
         public override string ToString()

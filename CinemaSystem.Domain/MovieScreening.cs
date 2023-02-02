@@ -22,7 +22,7 @@ namespace CinemaSystem.Domain
 
         public double GetPricePerSeat()
         {
-            return 0;
+            return pricePerSeat;
         }
 
         public bool inWeekend()

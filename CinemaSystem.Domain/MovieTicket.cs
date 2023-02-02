@@ -22,12 +22,12 @@ namespace CinemaSystem.Domain
 
         public bool IsPremiumTicket()
         {
-            return true;
+            return isPremium;
         }
 
         public double GetPrice()
         {
-            return 0;
+            return movieScreening.GetPricePerSeat();
         }
 
         public override string ToString()
