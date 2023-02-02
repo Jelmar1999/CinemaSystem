@@ -31,7 +31,8 @@ namespace CinemaSystem.Domain
                 return 0;
             }
 
-            double price = 0;
+            var price = 0d;
+            var isSecondTicketFree = IsSecondTicketFree();
             var freeSecondTicket = false;
 
             foreach (var movieTicket in tickets)
@@ -45,7 +46,7 @@ namespace CinemaSystem.Domain
                 }
 
                 // Check if next ticket is free
-                if (IsSecondTicketFree(movieTicket))
+                if (isSecondTicketFree)
                 {
                     freeSecondTicket = true;
                 }
@@ -68,9 +69,9 @@ namespace CinemaSystem.Domain
             return sale;
         }
 
-        private bool IsSecondTicketFree(MovieTicket ticket)
+        private bool IsSecondTicketFree()
         {
-            return isStudentOrder || ticket.movieScreening.inWeekend();
+            return isStudentOrder || tickets.First().movieScreening.inWeekend();
         }
 
         public override string ToString()
@@ -80,15 +81,22 @@ namespace CinemaSystem.Domain
 
         public void Export(TicketExportFormat exportFormat)
         {
-            if (exportFormat == TicketExportFormat.JSON)
+            switch (exportFormat)
             {
-                string output = Newtonsoft.Json.JsonConvert.SerializeObject(this, Formatting.Indented);
-                Console.WriteLine(output);
-            }
-            else if (exportFormat == TicketExportFormat.PLAINTEXT)
-            {
-                string output = this.ToString();
-                Console.WriteLine(output);
+                case TicketExportFormat.JSON:
+                {
+                    var output = JsonConvert.SerializeObject(this, Formatting.Indented);
+                    Console.WriteLine(output);
+                    break;
+                }
+                case TicketExportFormat.PLAINTEXT:
+                {
+                    var output = ToString();
+                    Console.WriteLine(output);
+                    break;
+                }
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(exportFormat), exportFormat, null);
             }
         }
     }
