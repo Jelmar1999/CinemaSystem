@@ -41,6 +41,7 @@ public class OrderUnitTests
     public double CalculatePrice_NoTicketReturnsMinusOne()
     {
         //Arrange
+        //Order by default has no initialized tickets list, so it will always be null if no tickets are added
         var order = new Order(1, false);
     
         //Act
