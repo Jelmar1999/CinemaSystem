@@ -37,6 +37,19 @@ public class OrderUnitTests
         yield return new TestCaseData(weekendTickets, false).Returns(31d).SetName("Weekend normal order");
     }
 
+    [Test(ExpectedResult = -1)]
+    public double CalculatePrice_NoTicketReturnsMinusOne()
+    {
+        //Arrange
+        var order = new Order(1, false);
+    
+        //Act
+        var result = order.CalculatePrice();
+    
+        //Assert
+        return result;
+    }
+    
     [TestCaseSource(nameof(CalculatePriceTestCaseData))]
     public double CalculatePrice_Correct(ICollection<MovieTicket> tickets, bool student)
     {
@@ -53,4 +66,5 @@ public class OrderUnitTests
         //Assert
         return result;
     }
+    
 }
