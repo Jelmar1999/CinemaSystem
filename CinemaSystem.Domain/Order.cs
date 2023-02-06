@@ -27,7 +27,7 @@ namespace CinemaSystem.Domain
 
         public double CalculatePrice()
         {
-            if (tickets == null || tickets.Count == 0)
+            if (tickets.Count == 0)
             {
                 return -1;
             }
@@ -40,7 +40,11 @@ namespace CinemaSystem.Domain
             foreach (var movieTicket in tickets)
             {
                 // Check if ticket is free, if true skip to next ticket
-                if (freeSecondTicket) continue;
+                if (freeSecondTicket)
+                {
+                    freeSecondTicket = false;
+                    continue;
+                }
                 price += movieTicket.GetPrice();
                 if (movieTicket.IsPremiumTicket())
                 {
