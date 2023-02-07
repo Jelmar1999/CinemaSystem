@@ -1,4 +1,4 @@
-name: Qodana
+name: Qodana_C
 on:
   push:
     branches:
