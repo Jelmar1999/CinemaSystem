@@ -1,6 +1,6 @@
-using CinemaSystem.Domain;
-
 namespace CinemaSystem.Test;
+
+using Domain;
 
 [TestFixture]
 public class OrderUnitTests

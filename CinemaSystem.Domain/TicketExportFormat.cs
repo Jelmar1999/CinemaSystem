@@ -1,8 +1,7 @@
-﻿namespace CinemaSystem.Domain
+﻿namespace CinemaSystem.Domain;
+
+public enum TicketExportFormat
 {
-    public enum TicketExportFormat
-    {
-        PLAINTEXT,
-        JSON
-    }
+    PLAINTEXT,
+    JSON
 }
