@@ -1,5 +1,7 @@
 ﻿using CinemaSystem.Domain.Strategy;
 
+using CinemaSystem.Domain.Interfaces;
+
 namespace CinemaSystem.Domain;
 
 using Newtonsoft.Json;
@@ -10,6 +12,7 @@ public class Order
     [JsonProperty] private bool isStudentOrder { get; set; }
     [JsonProperty] private ICollection<MovieTicket> tickets;
     private IPriceCalculationBehaviour? priceCalculationBehaviour;
+    private IExportBehaviour exportBehaviour;
 
     public Order(int orderNr, bool isStudentOrder)
     {
@@ -25,7 +28,7 @@ public class Order
             setPriceCalculationBehaviour(new RegularPriceCalculation());
         }
     }
-
+    
     public int GetOrderNr()
     {
         return orderNr;
@@ -36,6 +39,11 @@ public class Order
         this.priceCalculationBehaviour = priceCalculationBehaviour;
     }
 
+    public void setExportBehaviour(IExportBehaviour exportBehaviour)
+    {
+        this.exportBehaviour = exportBehaviour;
+    }
+    
     public void AddSeatReservation(MovieTicket ticket)
     {
         this.tickets.Add(ticket);
@@ -63,25 +71,10 @@ public class Order
 
         return $"orderNr = {this.orderNr}, isStudentOrder = {this.isStudentOrder}, movieTickets : {ticketString}";
     }
-
-    public void Export(TicketExportFormat exportFormat)
+    
+    public void Export()
     {
-        switch (exportFormat)
-        {
-            case TicketExportFormat.JSON:
-            {
-                var output = JsonConvert.SerializeObject(this, Formatting.Indented);
-                Console.WriteLine(output);
-                break;
-            }
-            case TicketExportFormat.PLAINTEXT:
-            {
-                var output = ToString();
-                Console.WriteLine(output);
-                break;
-            }
-            default:
-                throw new ArgumentOutOfRangeException(nameof(exportFormat), exportFormat, null);
-        }
+        var result = exportBehaviour.Export(this);
+        Console.WriteLine(result);
     }
 }
