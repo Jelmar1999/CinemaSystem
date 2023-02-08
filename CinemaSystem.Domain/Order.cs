@@ -63,13 +63,9 @@ public class Order
 
     public override string ToString()
     {
-        string ticketString = "\n";
-        foreach (var ticket in tickets)
-        {
-            ticketString += ticket.ToString() + '\n';
-        }
+        var ticketString = tickets.Aggregate("\n", (current, ticket) => current + (ticket.ToString() + '\n'));
 
-        return $"orderNr = {this.orderNr}, isStudentOrder = {this.isStudentOrder}, movieTickets : {ticketString}";
+        return $"orderNr = {orderNr}, isStudentOrder = {isStudentOrder}, movieTickets : {ticketString}";
     }
     
     public void Export()
