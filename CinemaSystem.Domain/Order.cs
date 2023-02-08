@@ -1,4 +1,6 @@
-﻿namespace CinemaSystem.Domain;
+﻿using CinemaSystem.Domain.Strategy;
+
+namespace CinemaSystem.Domain;
 
 using Newtonsoft.Json;
 
@@ -7,17 +9,31 @@ public class Order
     [JsonProperty] private int orderNr { get; set; }
     [JsonProperty] private bool isStudentOrder { get; set; }
     [JsonProperty] private ICollection<MovieTicket> tickets;
+    private IPriceCalculationBehaviour? priceCalculationBehaviour;
 
     public Order(int orderNr, bool isStudentOrder)
     {
         this.orderNr = orderNr;
         this.isStudentOrder = isStudentOrder;
         this.tickets = new List<MovieTicket>();
+        if (isStudentOrder)
+        {
+            setPriceCalculationBehaviour(new StudentPriceCalculation());
+        }
+        else
+        {
+            setPriceCalculationBehaviour(new RegularPriceCalculation());
+        }
     }
 
     public int GetOrderNr()
     {
         return orderNr;
+    }
+
+    public void setPriceCalculationBehaviour(IPriceCalculationBehaviour priceCalculationBehaviour)
+    {
+        this.priceCalculationBehaviour = priceCalculationBehaviour;
     }
 
     public void AddSeatReservation(MovieTicket ticket)
@@ -27,44 +43,14 @@ public class Order
 
     public double CalculatePrice()
     {
-        if (tickets.Count == 0)
+        if (tickets.Count == 0 || priceCalculationBehaviour == null)
         {
             return -1;
         }
 
-        var price = 0d;
-        var weekendOrder = tickets.First().movieScreening.inWeekend();
-        var isSecondTicketFree = isStudentOrder || !weekendOrder;
-        var freeSecondTicket = false;
+        var result = priceCalculationBehaviour.CalculatePrice(tickets);
 
-        foreach (var movieTicket in tickets)
-        {
-            // Check if ticket is free, if true skip to next ticket
-            if (freeSecondTicket)
-            {
-                freeSecondTicket = false;
-                continue;
-            }
-
-            price += movieTicket.GetPrice();
-            if (movieTicket.IsPremiumTicket())
-            {
-                price += isStudentOrder ? 2 : 3;
-            }
-
-            // Check if next ticket is free
-            if (isSecondTicketFree)
-            {
-                freeSecondTicket = true;
-            }
-        }
-
-        if (tickets.Count >= 6 && weekendOrder && !isStudentOrder)
-        {
-            price *= 0.9;
-        }
-
-        return Math.Round(price, 2);
+        return Math.Round(result, 2);
     }
 
     public override string ToString()
