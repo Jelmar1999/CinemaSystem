@@ -24,10 +24,7 @@ public class RegularPriceCalculation : IPriceCalculationBehaviour
             }
 
             // Check if next ticket is free
-            if (!weekendOrder)
-            {
-                freeSecondTicket = true;
-            }
+            freeSecondTicket = !weekendOrder;
         }
 
         if (tickets.Count >= 6 && weekendOrder)
