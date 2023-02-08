@@ -1,4 +1,4 @@
-name: Qodana
+name: Qodana_C
 on:
   push:
     branches:
@@ -14,4 +14,4 @@ jobs:
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@v2022.3.2
         env:
-          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN_C }}
