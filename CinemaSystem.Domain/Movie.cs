@@ -15,7 +15,7 @@ namespace CinemaSystem.Domain
 
         public void AddScreening(MovieScreening screening)
         {
-            this.movieScreenings.Add(screening);
+            movieScreenings.Add(screening);
         }
 
         public override string ToString()
