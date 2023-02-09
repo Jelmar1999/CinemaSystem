@@ -14,7 +14,7 @@ public class MovieTicket
         this.movieScreening = movieScreening;
         this.rowNr = rowNr;
         this.seatNr = seatNr;
-        this.isPremium = isPremiumReservation;
+        isPremium = isPremiumReservation;
     }
 
     public bool IsPremiumTicket()
@@ -30,6 +30,6 @@ public class MovieTicket
     public override string ToString()
     {
         return
-            $"rowNr = {this.rowNr}, seatNr = {this.seatNr}, isPremium = {this.isPremium}, screening = {movieScreening.ToString()}";
+            $"rowNr = {rowNr}, seatNr = {seatNr}, isPremium = {isPremium}, screening = {movieScreening.ToString()}";
     }
 }

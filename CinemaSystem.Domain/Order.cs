@@ -1,28 +1,58 @@
-﻿namespace CinemaSystem.Domain;
+﻿using CinemaSystem.Domain.States;
+
+namespace CinemaSystem.Domain;
 
 using Newtonsoft.Json;
 
 public class Order
 {
-    [JsonProperty] private int orderNr { get; set; }
-    [JsonProperty] private bool isStudentOrder { get; set; }
-    [JsonProperty] private ICollection<MovieTicket> tickets;
+    [JsonProperty] public int orderNr { get; set; }
+    [JsonProperty] public bool isStudentOrder { get; set; }
+    [JsonProperty] public ICollection<MovieTicket> tickets;
+
+    private IState currentState;
 
     public Order(int orderNr, bool isStudentOrder)
     {
         this.orderNr = orderNr;
-        this.isStudentOrder = isStudentOrder;
-        this.tickets = new List<MovieTicket>();
+        this.isStudentOrder = isStudentOrder; 
+        tickets = new List<MovieTicket>();
+        currentState = new CreateState(this);
     }
 
     public int GetOrderNr()
     {
         return orderNr;
     }
+    
+    public void ChangeState(IState state)
+    {
+        currentState = state;
+    }
+
+    public void CreateOrder()
+    {
+        currentState.Create();
+    }
+
+    public void PayOrder()
+    {
+        currentState.Pay();
+    }
+
+    public void ChangeOrder()
+    {
+        currentState.Change();
+    }
+
+    public void CancelOrder()
+    {
+        currentState.Cancel();
+    }
 
     public void AddSeatReservation(MovieTicket ticket)
     {
-        this.tickets.Add(ticket);
+        tickets.Add(ticket);
     }
 
     public double CalculatePrice()
@@ -75,7 +105,7 @@ public class Order
             ticketString += ticket.ToString() + '\n';
         }
 
-        return $"orderNr = {this.orderNr}, isStudentOrder = {this.isStudentOrder}, movieTickets : {ticketString}";
+        return $"orderNr = {orderNr}, isStudentOrder = {isStudentOrder}, movieTickets : {ticketString}";
     }
 
     public void Export(TicketExportFormat exportFormat)
