@@ -11,7 +11,7 @@ public class Order
     [JsonProperty] private int orderNr { get; set; }
     [JsonProperty] private bool isStudentOrder { get; set; }
     [JsonProperty] private ICollection<MovieTicket> tickets;
-    private IPriceCalculationBehaviour? priceCalculationBehaviour;
+    private IPriceCalculationBehaviour priceCalculationBehaviour;
     private IExportBehaviour exportBehaviour;
 
     public Order(int orderNr, bool isStudentOrder)
