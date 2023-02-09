@@ -1,6 +1,9 @@
 name: Qodana
 on:
-  push
+  push:
+    branches:
+    - master
+    - dev
 
 jobs:
   qodana:
